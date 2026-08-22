@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deeprunner.dev/schema/market-catalog-v1.json",
+  "title": "DeepRunner plugin market catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "catalogVersion",
+    "generatedAt",
+    "sourceId",
+    "sourceRevision",
+    "entries"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "catalogVersion": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "sourceId": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "sourceRevision": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "entries": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": { "$ref": "#/$defs/entry" }
+    },
+    "revocations": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": { "$ref": "#/$defs/revocation" }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1, "maxLength": 12000 },
+    "shortStringArray": {
+      "type": "array",
+      "maxItems": 64,
+      "items": { "type": "string", "minLength": 1, "maxLength": 128 }
+    },
+    "release": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "exactSpec",
+        "distIntegrity",
+        "sourceRevision",
+        "publishedAt",
+        "dshVersionRange",
+        "platforms",
+        "faces",
+        "capabilities"
+      ],
+      "properties": {
+        "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$" },
+        "exactSpec": { "$ref": "#/$defs/nonEmptyString" },
+        "distIntegrity": { "type": "string", "pattern": "^sha(?:256|384|512)-[A-Za-z0-9+/]+={0,2}$" },
+        "sourceRevision": { "$ref": "#/$defs/nonEmptyString" },
+        "publishedAt": { "type": "string", "format": "date-time" },
+        "dshVersionRange": { "$ref": "#/$defs/nonEmptyString" },
+        "deepRunnerVersionRange": { "$ref": "#/$defs/nonEmptyString" },
+        "platforms": {
+          "type": "array",
+          "maxItems": 3,
+          "items": { "enum": ["darwin", "win32", "linux"] }
+        },
+        "architectures": { "$ref": "#/$defs/shortStringArray" },
+        "faces": {
+          "type": "array",
+          "maxItems": 2,
+          "items": { "enum": ["host", "client"] }
+        },
+        "capabilities": { "$ref": "#/$defs/shortStringArray" },
+        "releaseNotes": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "packageName",
+        "displayName",
+        "summary",
+        "description",
+        "publisher",
+        "trustLevel",
+        "license",
+        "categories",
+        "tags",
+        "status",
+        "release"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$" },
+        "packageName": { "type": "string", "pattern": "^(?:@[a-z0-9][a-z0-9._-]*/)?[a-z0-9][a-z0-9._-]*$" },
+        "displayName": { "$ref": "#/$defs/nonEmptyString" },
+        "summary": { "$ref": "#/$defs/nonEmptyString" },
+        "description": { "$ref": "#/$defs/nonEmptyString" },
+        "publisher": { "$ref": "#/$defs/nonEmptyString" },
+        "trustLevel": { "enum": ["builtin", "verified-publisher", "community"] },
+        "repository": { "type": "string", "format": "uri", "pattern": "^https://" },
+        "homepage": { "type": "string", "format": "uri", "pattern": "^https://" },
+        "license": { "$ref": "#/$defs/nonEmptyString" },
+        "categories": { "$ref": "#/$defs/shortStringArray" },
+        "tags": { "$ref": "#/$defs/shortStringArray" },
+        "status": { "enum": ["listed", "paused", "deprecated"] },
+        "release": { "$ref": "#/$defs/release" }
+      }
+    },
+    "revocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pluginId", "reason", "action", "publishedAt"],
+      "properties": {
+        "pluginId": { "$ref": "#/$defs/nonEmptyString" },
+        "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$" },
+        "reason": { "$ref": "#/$defs/nonEmptyString" },
+        "action": { "enum": ["block-install", "recommend-remove"] },
+        "publishedAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}
+

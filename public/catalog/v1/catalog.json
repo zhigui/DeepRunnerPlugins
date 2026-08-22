@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "catalogVersion": "2026.08.22.1",
+  "generatedAt": "2026-08-22T00:00:00.000Z",
+  "sourceId": "deeprunner-official",
+  "sourceRevision": "catalog-2026.08.22.1",
+  "revocations": [],
+  "entries": [
+    {
+      "id": "dsh-better-sidebar",
+      "packageName": "dsh-better-sidebar",
+      "displayName": "DSH Better Sidebar",
+      "summary": "A VS Code-like workbench for files, editing, terminal, Git and browser tasks.",
+      "description": "Adds a session-scoped right sidebar and bottom workbench to DSH, including a file explorer, CodeMirror editor, previews, an embedded browser, a real terminal and Git tools. It also exposes extension points for other plugins to register tabs and file viewers.",
+      "publisher": "omdsh-dev",
+      "trustLevel": "community",
+      "repository": "https://github.com/omdsh-dev/DSH-better-sidebar",
+      "homepage": "https://github.com/omdsh-dev/DSH-better-sidebar#readme",
+      "license": "MIT",
+      "categories": [
+        "developer-tools",
+        "productivity"
+      ],
+      "tags": [
+        "sidebar",
+        "files",
+        "editor",
+        "terminal",
+        "git",
+        "browser"
+      ],
+      "status": "listed",
+      "release": {
+        "version": "0.12.1",
+        "exactSpec": "dsh-better-sidebar@0.12.1",
+        "distIntegrity": "sha512-64kCJx58evYTd8SHsYQD6ZPEmKrcZger4HhAUH/k2YzKhQ4fGcpTzCmYkTUb65ShSO4jgSWl0gNXPf3R/YPbFA==",
+        "sourceRevision": "4e275aa3218fc10c5623283d5958155a6618b5cd",
+        "publishedAt": "2026-08-14T16:38:24.432Z",
+        "dshVersionRange": "^0.1.0-rc.6",
+        "deepRunnerVersionRange": "0.0.0",
+        "platforms": [
+          "darwin",
+          "win32",
+          "linux"
+        ],
+        "faces": [
+          "host",
+          "client"
+        ],
+        "capabilities": [
+          "filesystem-read",
+          "filesystem-write",
+          "network-access",
+          "command-execution",
+          "terminal-access",
+          "git-access",
+          "native-dependency"
+        ],
+        "releaseNotes": "Pinned compatibility fixture for DeepRunner's DSH 0.1.0-rc.6 baseline. This is not the latest upstream release."
+      }
+    }
+  ]
+}

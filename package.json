@@ -1,0 +1,14 @@
+{
+  "name": "deeprunner-plugins-catalog",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-catalog.mjs",
+    "check": "node scripts/validate-catalog.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
+
