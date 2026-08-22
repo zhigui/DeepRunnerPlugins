@@ -70,6 +70,12 @@
           "items": { "enum": ["host", "client"] }
         },
         "capabilities": { "$ref": "#/$defs/shortStringArray" },
+        "buildScriptPackages": {
+          "type": "array",
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^(?:@[a-z0-9][a-z0-9._-]*/)?[a-z0-9][a-z0-9._-]*$" }
+        },
         "releaseNotes": { "$ref": "#/$defs/nonEmptyString" }
       }
     },
@@ -121,4 +127,3 @@
     }
   }
 }
-

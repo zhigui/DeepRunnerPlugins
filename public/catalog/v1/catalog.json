@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "2026.08.22.1",
-  "generatedAt": "2026-08-22T00:00:00.000Z",
+  "catalogVersion": "2026.08.22.2",
+  "generatedAt": "2026-08-22T06:02:00.000Z",
   "sourceId": "deeprunner-official",
-  "sourceRevision": "catalog-2026.08.22.1",
+  "sourceRevision": "catalog-2026.08.22.2",
   "revocations": [],
   "entries": [
     {
@@ -55,6 +55,9 @@
           "terminal-access",
           "git-access",
           "native-dependency"
+        ],
+        "buildScriptPackages": [
+          "node-pty"
         ],
         "releaseNotes": "Pinned compatibility fixture for DeepRunner's DSH 0.1.0-rc.6 baseline. This is not the latest upstream release."
       }

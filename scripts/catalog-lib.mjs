@@ -37,7 +37,7 @@ function timestamp(value, label) {
 
 function validateRelease(release, packageName, label) {
   const required = ['version', 'exactSpec', 'distIntegrity', 'sourceRevision', 'publishedAt', 'dshVersionRange', 'platforms', 'faces', 'capabilities']
-  exactKeys(release, label, required, ['deepRunnerVersionRange', 'architectures', 'releaseNotes'])
+  exactKeys(release, label, required, ['deepRunnerVersionRange', 'architectures', 'buildScriptPackages', 'releaseNotes'])
   string(release.version, `${label}.version`, 128)
   assert(semverPattern.test(release.version), `${label}.version must be exact semver`)
   assert(release.exactSpec === `${packageName}@${release.version}`, `${label}.exactSpec must pin packageName and version`)
@@ -52,6 +52,11 @@ function validateRelease(release, packageName, label) {
   strings(release.faces, `${label}.faces`, 2)
   assert(release.faces.every(value => ['host', 'client'].includes(value)), `${label}.faces has an unsupported face`)
   strings(release.capabilities, `${label}.capabilities`)
+  if (release.buildScriptPackages !== undefined) {
+    strings(release.buildScriptPackages, `${label}.buildScriptPackages`, 32)
+    assert(release.buildScriptPackages.every(packageName => packagePattern.test(packageName)), `${label}.buildScriptPackages has an invalid package name`)
+    assert(new Set(release.buildScriptPackages).size === release.buildScriptPackages.length, `${label}.buildScriptPackages must be unique`)
+  }
   if (release.releaseNotes !== undefined) string(release.releaseNotes, `${label}.releaseNotes`)
 }
 
@@ -113,4 +118,3 @@ export async function loadSourceCatalog() {
 export function serializeCatalog(catalog) {
   return `${JSON.stringify(catalog, null, 2)}\n`
 }
-

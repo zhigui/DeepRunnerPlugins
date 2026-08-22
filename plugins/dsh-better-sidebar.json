@@ -48,7 +48,9 @@
       "git-access",
       "native-dependency"
     ],
+    "buildScriptPackages": [
+      "node-pty"
+    ],
     "releaseNotes": "Pinned compatibility fixture for DeepRunner's DSH 0.1.0-rc.6 baseline. This is not the latest upstream release."
   }
 }
-
