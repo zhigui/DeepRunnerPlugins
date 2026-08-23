@@ -1,0 +1,50 @@
+{
+  "id": "dsh-im",
+  "packageName": "@xmanrui/dsh-im",
+  "displayName": "DSH IM",
+  "summary": "Connect nine IM bots and a public AI Office to your local Harness.",
+  "description": "Adds multi-bot IM channel support to DSH behind one settings surface: Feishu/Lark, WeChat, DingTalk, WeCom, QQ, Slack, Telegram, Discord and WhatsApp bots connect by QR code, App Manifest or credentials, each with independent workspace and session bindings. An AI Office Connector lets a public office drive the local Harness through outbound heartbeats and SSE without a public IP. Bot credentials are submitted only to the local Host and stored in the protected credential store.",
+  "publisher": "xmanrui",
+  "trustLevel": "community",
+  "repository": "https://github.com/xmanrui/dsh-im",
+  "homepage": "https://github.com/xmanrui/dsh-im#readme",
+  "license": "MIT",
+  "tags": [
+    "im",
+    "bot",
+    "feishu",
+    "wechat",
+    "wecom",
+    "dingtalk",
+    "qq",
+    "slack",
+    "telegram",
+    "discord",
+    "whatsapp",
+    "notifications"
+  ],
+  "status": "listed",
+  "release": {
+    "version": "1.0.2",
+    "exactSpec": "@xmanrui/dsh-im@1.0.2",
+    "distIntegrity": "sha512-xYZPRjSCHMjXzBinfmJw3OjJRUaPhXN+cLXBUbuTvMHjEocXOTD4SKR/YXKYLVPGTc8zTKBZ1kljbcZ1wLYd4A==",
+    "sourceRevision": "9a5a7941af626facd9759a7be499e337c26b47b7",
+    "publishedAt": "2026-08-22T09:57:34.976Z",
+    "dshVersionRange": "^0.1.0-rc.6",
+    "deepRunnerVersionRange": "0.0.0",
+    "platforms": [
+      "darwin",
+      "win32",
+      "linux"
+    ],
+    "faces": [
+      "host",
+      "client"
+    ],
+    "capabilities": [
+      "network-access",
+      "credential-storage"
+    ],
+    "releaseNotes": "Initial curated release pinning @xmanrui/dsh-im 1.0.2 for DeepRunner's DSH 0.1.0-rc.6 baseline."
+  }
+}

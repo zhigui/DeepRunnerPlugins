@@ -91,7 +91,6 @@
         "publisher",
         "trustLevel",
         "license",
-        "categories",
         "tags",
         "status",
         "release"
@@ -107,7 +106,6 @@
         "repository": { "type": "string", "format": "uri", "pattern": "^https://" },
         "homepage": { "type": "string", "format": "uri", "pattern": "^https://" },
         "license": { "$ref": "#/$defs/nonEmptyString" },
-        "categories": { "$ref": "#/$defs/shortStringArray" },
         "tags": { "$ref": "#/$defs/shortStringArray" },
         "status": { "enum": ["listed", "paused", "deprecated"] },
         "release": { "$ref": "#/$defs/release" }

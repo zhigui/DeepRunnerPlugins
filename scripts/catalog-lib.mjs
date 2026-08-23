@@ -61,7 +61,7 @@ function validateRelease(release, packageName, label) {
 }
 
 function validateEntry(entry, label) {
-  const required = ['id', 'packageName', 'displayName', 'summary', 'description', 'publisher', 'trustLevel', 'license', 'categories', 'tags', 'status', 'release']
+  const required = ['id', 'packageName', 'displayName', 'summary', 'description', 'publisher', 'trustLevel', 'license', 'tags', 'status', 'release']
   exactKeys(entry, label, required, ['repository', 'homepage'])
   string(entry.id, `${label}.id`, 128)
   string(entry.packageName, `${label}.packageName`, 214)
@@ -76,7 +76,6 @@ function validateEntry(entry, label) {
       assert(new URL(entry[key]).protocol === 'https:', `${label}.${key} must use HTTPS`)
     }
   }
-  strings(entry.categories, `${label}.categories`)
   strings(entry.tags, `${label}.tags`)
   validateRelease(entry.release, entry.packageName, `${label}.release`)
 }

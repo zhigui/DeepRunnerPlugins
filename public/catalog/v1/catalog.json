@@ -1,41 +1,43 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "2026.08.22.2",
-  "generatedAt": "2026-08-22T06:02:00.000Z",
+  "catalogVersion": "2026.08.23.1",
+  "generatedAt": "2026-08-23T00:00:00.000Z",
   "sourceId": "deeprunner-official",
-  "sourceRevision": "catalog-2026.08.22.2",
+  "sourceRevision": "catalog-2026.08.23.1",
   "revocations": [],
   "entries": [
     {
-      "id": "dsh-better-sidebar",
-      "packageName": "dsh-better-sidebar",
-      "displayName": "DSH Better Sidebar",
-      "summary": "A VS Code-like workbench for files, editing, terminal, Git and browser tasks.",
-      "description": "Adds a session-scoped right sidebar and bottom workbench to DSH, including a file explorer, CodeMirror editor, previews, an embedded browser, a real terminal and Git tools. It also exposes extension points for other plugins to register tabs and file viewers.",
-      "publisher": "omdsh-dev",
+      "id": "dsh-im",
+      "packageName": "@xmanrui/dsh-im",
+      "displayName": "DSH IM",
+      "summary": "Connect nine IM bots and a public AI Office to your local Harness.",
+      "description": "Adds multi-bot IM channel support to DSH behind one settings surface: Feishu/Lark, WeChat, DingTalk, WeCom, QQ, Slack, Telegram, Discord and WhatsApp bots connect by QR code, App Manifest or credentials, each with independent workspace and session bindings. An AI Office Connector lets a public office drive the local Harness through outbound heartbeats and SSE without a public IP. Bot credentials are submitted only to the local Host and stored in the protected credential store.",
+      "publisher": "xmanrui",
       "trustLevel": "community",
-      "repository": "https://github.com/omdsh-dev/DSH-better-sidebar",
-      "homepage": "https://github.com/omdsh-dev/DSH-better-sidebar#readme",
+      "repository": "https://github.com/xmanrui/dsh-im",
+      "homepage": "https://github.com/xmanrui/dsh-im#readme",
       "license": "MIT",
-      "categories": [
-        "developer-tools",
-        "productivity"
-      ],
       "tags": [
-        "sidebar",
-        "files",
-        "editor",
-        "terminal",
-        "git",
-        "browser"
+        "im",
+        "bot",
+        "feishu",
+        "wechat",
+        "wecom",
+        "dingtalk",
+        "qq",
+        "slack",
+        "telegram",
+        "discord",
+        "whatsapp",
+        "notifications"
       ],
       "status": "listed",
       "release": {
-        "version": "0.12.1",
-        "exactSpec": "dsh-better-sidebar@0.12.1",
-        "distIntegrity": "sha512-64kCJx58evYTd8SHsYQD6ZPEmKrcZger4HhAUH/k2YzKhQ4fGcpTzCmYkTUb65ShSO4jgSWl0gNXPf3R/YPbFA==",
-        "sourceRevision": "4e275aa3218fc10c5623283d5958155a6618b5cd",
-        "publishedAt": "2026-08-14T16:38:24.432Z",
+        "version": "1.0.2",
+        "exactSpec": "@xmanrui/dsh-im@1.0.2",
+        "distIntegrity": "sha512-xYZPRjSCHMjXzBinfmJw3OjJRUaPhXN+cLXBUbuTvMHjEocXOTD4SKR/YXKYLVPGTc8zTKBZ1kljbcZ1wLYd4A==",
+        "sourceRevision": "9a5a7941af626facd9759a7be499e337c26b47b7",
+        "publishedAt": "2026-08-22T09:57:34.976Z",
         "dshVersionRange": "^0.1.0-rc.6",
         "deepRunnerVersionRange": "0.0.0",
         "platforms": [
@@ -48,18 +50,10 @@
           "client"
         ],
         "capabilities": [
-          "filesystem-read",
-          "filesystem-write",
           "network-access",
-          "command-execution",
-          "terminal-access",
-          "git-access",
-          "native-dependency"
+          "credential-storage"
         ],
-        "buildScriptPackages": [
-          "node-pty"
-        ],
-        "releaseNotes": "Pinned compatibility fixture for DeepRunner's DSH 0.1.0-rc.6 baseline. This is not the latest upstream release."
+        "releaseNotes": "Initial curated release pinning @xmanrui/dsh-im 1.0.2 for DeepRunner's DSH 0.1.0-rc.6 baseline."
       }
     }
   ]

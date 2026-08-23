@@ -2,7 +2,7 @@
 
 DeepRunner 的 App Store 式严选插件市场数据源。这个仓库维护机器可验证的人工精选目录，不实现插件审核后台，也不抓取任意 npm/GitHub 搜索结果。
 
-当前只收录一个用于 M5 真实安装链路测试的社区插件：[`dsh-better-sidebar@0.12.1`](https://github.com/omdsh-dev/DSH-better-sidebar)。该版本固定匹配 DeepRunner 当前的 DSH `0.1.0-rc.6` 基线；它不是上游最新版本。
+当前只收录一个用于 M5 真实安装链路测试的社区插件：[`@xmanrui/dsh-im@1.0.2`](https://github.com/xmanrui/dsh-im)。该版本固定匹配 DeepRunner 当前的 DSH `0.1.0-rc.6` 基线。
 
 ## 目录结构
 
