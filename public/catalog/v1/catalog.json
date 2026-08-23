@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "2026.08.23.1",
+  "catalogVersion": "2026.08.23.2",
   "generatedAt": "2026-08-23T00:00:00.000Z",
   "sourceId": "deeprunner-official",
-  "sourceRevision": "catalog-2026.08.23.1",
+  "sourceRevision": "catalog-2026.08.23.2",
   "revocations": [],
   "entries": [
     {
@@ -39,7 +39,7 @@
         "sourceRevision": "9a5a7941af626facd9759a7be499e337c26b47b7",
         "publishedAt": "2026-08-22T09:57:34.976Z",
         "dshVersionRange": "^0.1.0-rc.6",
-        "deepRunnerVersionRange": "0.0.0",
+        "deepRunnerVersionRange": "^0.1.0",
         "platforms": [
           "darwin",
           "win32",

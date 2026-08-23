@@ -1,0 +1,34 @@
+name: Tag catalog release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - catalog.config.json
+      - plugins/**
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm run check
+      - name: Create immutable catalog tag
+        shell: bash
+        run: |
+          version=$(node -p "require('./catalog.config.json').catalogVersion")
+          tag="catalog-$version"
+          if git rev-parse "$tag" >/dev/null 2>&1; then
+            test "$(git rev-list -n 1 "$tag")" = "$GITHUB_SHA"
+            exit
+          fi
+          git tag -a "$tag" "$GITHUB_SHA" -m "DeepRunner plugin catalog $version"
+          git push origin "$tag"

@@ -1,0 +1,43 @@
+name: Promote plugin release
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: Exact npm package spec, for example @scope/plugin@1.2.3
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Resolve deterministic branch identity
+        id: identity
+        env:
+          PACKAGE_SPEC: ${{ inputs.package }}
+        run: node scripts/promotion-branch.mjs
+      - name: Audit and update source entry
+        env:
+          PACKAGE_SPEC: ${{ inputs.package }}
+        run: npm run promote -- "$PACKAGE_SPEC" --write | tee promote-report.md
+      - name: Bump deterministic catalog version
+        run: node scripts/bump-catalog.mjs
+      - run: npm run build
+      - run: npm run check
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/${{ steps.identity.outputs.branch }}
+          delete-branch: true
+          title: "chore(market): promote ${{ inputs.package }}"
+          body-path: promote-report.md
+          commit-message: "chore(market): promote ${{ inputs.package }}"
+          labels: plugin-update,automated
