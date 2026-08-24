@@ -18,13 +18,15 @@ export function parsePackageSpec(input) {
 export async function registryMetadata(packageName, fetchImpl = globalThis.fetch) {
   const url = `https://registry.npmjs.org/${packageName.replace('/', '%2f')}`
   const response = await fetchImpl(url, {
-    headers: { accept: 'application/vnd.npm.install-v1+json' },
+    // The abbreviated install-v1 packument omits publication timestamps.
+    // Catalog releases pin publishedAt, so maintenance workflows need the full packument.
+    headers: { accept: 'application/json' },
     redirect: 'error',
     signal: AbortSignal.timeout(15_000),
   })
   if (!response.ok) throw new Error(`npm registry returned HTTP ${response.status}`)
   const text = await response.text()
-  if (Buffer.byteLength(text) > 5 * 1024 * 1024) throw new Error('npm metadata response is too large')
+  if (Buffer.byteLength(text) > 16 * 1024 * 1024) throw new Error('npm metadata response is too large')
   return JSON.parse(text)
 }
 
