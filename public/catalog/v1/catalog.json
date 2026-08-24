@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "2026.08.24.2",
-  "generatedAt": "2026-08-24T09:37:38.444Z",
+  "catalogVersion": "2026.08.24.3",
+  "generatedAt": "2026-08-24T11:16:46.359Z",
   "sourceId": "deeprunner-official",
-  "sourceRevision": "catalog-2026.08.24.2",
+  "sourceRevision": "catalog-2026.08.24.3",
   "revocations": [],
   "entries": [
     {
@@ -33,11 +33,11 @@
       ],
       "status": "listed",
       "release": {
-        "version": "1.0.2",
-        "exactSpec": "@xmanrui/dsh-im@1.0.2",
-        "distIntegrity": "sha512-xYZPRjSCHMjXzBinfmJw3OjJRUaPhXN+cLXBUbuTvMHjEocXOTD4SKR/YXKYLVPGTc8zTKBZ1kljbcZ1wLYd4A==",
-        "sourceRevision": "9a5a7941af626facd9759a7be499e337c26b47b7",
-        "publishedAt": "2026-08-22T09:57:34.976Z",
+        "version": "2.1.0",
+        "exactSpec": "@xmanrui/dsh-im@2.1.0",
+        "distIntegrity": "sha512-/bW2TC7dkFt+UDAk6ryVZTdCfp1N8q9WiXvEAGj6pp5xCe4HWU8cx7TxGjjnZTOkdS/QzuRXBXnN/oc2zopMOA==",
+        "sourceRevision": "60d19eb45ddfae3717d82f6fa9312b74cd6e66a6",
+        "publishedAt": "2026-08-24T10:55:06.081Z",
         "dshVersionRange": "^0.1.0-rc.6",
         "deepRunnerVersionRange": "^0.1.0",
         "platforms": [
@@ -53,7 +53,7 @@
           "network-access",
           "credential-storage"
         ],
-        "releaseNotes": "Initial marketplace release pinning @xmanrui/dsh-im 1.0.2 for DeepRunner's DSH 0.1.0-rc.6 baseline."
+        "releaseNotes": "Marketplace update to @xmanrui/dsh-im 2.1.0; review upstream release notes before merging."
       }
     },
     {
