@@ -1,0 +1,43 @@
+{
+  "id": "@zseven-w/dsh-ios",
+  "packageName": "@zseven-w/dsh-ios",
+  "displayName": "DSH iOS Simulator",
+  "summary": "A live, interactive iOS Simulator inside a DeepSeek Harness conversation — plus your real iPhone over USB.",
+  "description": "DeepSeek Harness plugin for the iOS Simulator — build, run, and interact with a live simulator stream inside a conversation. Tested with DSH 0.1.1-rc.1.",
+  "publisher": "ZSeven-W",
+  "trustLevel": "community",
+  "repository": "https://github.com/ZSeven-W/dsh-ios.git",
+  "homepage": "https://github.com/ZSeven-W/dsh-ios#readme",
+  "license": "MIT",
+  "tags": [
+    "dsh",
+    "simulator",
+    "ios-simulator",
+    "plugin",
+    "ios"
+  ],
+  "status": "listed",
+  "release": {
+    "version": "0.1.0-rc.5",
+    "exactSpec": "@zseven-w/dsh-ios@0.1.0-rc.5",
+    "distIntegrity": "sha512-ZAeHkTmm/YpCDc+tGOgj6fAZaGJ6sQkV8q1HaJDV8OLKixtmj+FuNX/DSNOyNduORmwzg5zF/MMuGSq7yijNVw==",
+    "sourceRevision": "2e6b9aa4fb608aaebb94acb1c5d44d37c14adfea",
+    "publishedAt": "2026-08-23T17:18:35.307Z",
+    "dshVersionRange": "^0.1.0-rc.6",
+    "deepRunnerVersionRange": "^0.1.0",
+    "platforms": [
+      "darwin"
+    ],
+    "faces": [
+      "host",
+      "client"
+    ],
+    "capabilities": [
+      "filesystem",
+      "shell",
+      "network-access",
+      "device-control"
+    ],
+    "releaseNotes": "Initial marketplace release pinning @zseven-w/dsh-ios 0.1.0-rc.5."
+  }
+}
