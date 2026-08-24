@@ -22,7 +22,7 @@ for (const entry of catalog.entries.filter(entry => entry.status !== 'deprecated
   if ((await stat(path)).size === 0) throw new Error(`empty plugin page for ${entry.id}`)
   const html = await readFile(path, 'utf8')
   assertEnglishUi(html, `plugin page ${entry.id}`)
-  if (!html.includes(`deeprunner://market/plugin/${encodeURIComponent(entry.id)}`)) throw new Error(`plugin page ${entry.id} has no safe deep link`)
+  if (!html.includes(`deeprunner://market/plugin/${entry.id}`)) throw new Error(`plugin page ${entry.id} has no safe deep link`)
   if (html.includes('data-copy-link') || html.includes('class="notice"') || html.includes('class="actions"')) throw new Error(`plugin page ${entry.id} contains removed detail actions`)
   if (entry.repository && (!html.includes('class="detail-actions"') || !html.includes('class="source-button"'))) throw new Error(`plugin page ${entry.id} must place source next to install`)
 }

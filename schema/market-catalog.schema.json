@@ -96,7 +96,7 @@
         "release"
       ],
       "properties": {
-        "id": { "type": "string", "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$" },
+        "id": { "type": "string", "pattern": "^(?:@[a-z0-9][a-z0-9._-]*/)?[a-z0-9][a-z0-9._-]*$" },
         "packageName": { "type": "string", "pattern": "^(?:@[a-z0-9][a-z0-9._-]*/)?[a-z0-9][a-z0-9._-]*$" },
         "displayName": { "$ref": "#/$defs/nonEmptyString" },
         "summary": { "$ref": "#/$defs/nonEmptyString" },

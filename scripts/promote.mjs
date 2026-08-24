@@ -1,19 +1,15 @@
 import { readFile, writeFile } from 'node:fs/promises'
-import { resolve } from 'node:path'
 import { auditMarkdown, auditRelease, parsePackageSpec, registryMetadata, releaseMetadata } from './registry-lib.mjs'
-import { root } from './catalog-lib.mjs'
+import { sourceEntryPaths } from './catalog-lib.mjs'
 
 const args = process.argv.slice(2)
 const write = args.includes('--write')
 const spec = args.find(value => !value.startsWith('--'))
 if (spec === undefined) throw new Error('usage: npm run promote -- <package[@version]> [--write]')
 const { packageName, version } = parsePackageSpec(spec)
-const files = (await import('node:fs/promises')).readdir(resolve(root, 'plugins'))
 let targetPath
 let entry
-for (const filename of await files) {
-  if (!filename.endsWith('.json')) continue
-  const path = resolve(root, 'plugins', filename)
+for (const path of await sourceEntryPaths()) {
   const candidate = JSON.parse(await readFile(path, 'utf8'))
   if (candidate.packageName === packageName) { targetPath = path; entry = candidate; break }
 }

@@ -1,5 +1,5 @@
 {
-  "id": "dsh-im",
+  "id": "@xmanrui/dsh-im",
   "packageName": "@xmanrui/dsh-im",
   "displayName": "DSH IM",
   "summary": "Connect nine IM bots and a public AI Office to your local Harness.",

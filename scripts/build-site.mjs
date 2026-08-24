@@ -16,6 +16,8 @@ const formatDate = value => new Intl.DateTimeFormat('en-US', { year: 'numeric', 
 const platformName = value => ({ darwin: 'macOS', win32: 'Windows', linux: 'Linux' })[value] ?? value
 const capabilityName = value => ({ 'network-access': 'Network access', 'credential-storage': 'Credential storage', filesystem: 'File access', shell: 'Command execution' })[value] ?? value
 const pluginCount = count => `${count} ${count === 1 ? 'plugin' : 'plugins'}`
+const detailUrlFor = id => `${base}plugin/${id}/`
+const deepLinkFor = id => `deeprunner://market/plugin/${id}`
 
 const layout = (title, description, body, depth = 0) => {
   const prefix = '../'.repeat(depth)
@@ -46,8 +48,8 @@ const layout = (title, description, body, depth = 0) => {
 
 const listed = catalog.entries.filter(entry => entry.status !== 'deprecated')
 const cards = listed.map(entry => {
-  const detailUrl = `${base}plugin/${encodeURIComponent(entry.id)}/`
-  const deepLink = `deeprunner://market/plugin/${encodeURIComponent(entry.id)}`
+  const detailUrl = detailUrlFor(entry.id)
+  const deepLink = deepLinkFor(entry.id)
   const searchText = `${entry.displayName} ${entry.publisher} ${entry.summary} ${entry.description} ${entry.tags.join(' ')}`.toLocaleLowerCase()
   return `<article class="card" data-plugin-card data-search="${escape(searchText)}">
     <a class="card-link" href="${detailUrl}" aria-label="View ${escape(entry.displayName)} details"></a>
@@ -85,7 +87,7 @@ await writeFile(resolve(dist, 'index.html'), layout('DeepRunner Plugin Marketpla
 for (const entry of listed) {
   const dir = resolve(dist, 'plugin', entry.id)
   await mkdir(dir, { recursive: true })
-  const deepLink = `deeprunner://market/plugin/${encodeURIComponent(entry.id)}`
+  const deepLink = deepLinkFor(entry.id)
   const body = `<article class="shell detail">
     <div class="breadcrumbs"><a href="${base}">Marketplace</a><span>/</span><span>${escape(entry.displayName)}</span></div>
     <header class="detail-header">${iconFor(entry)}<div><h1>${escape(entry.displayName)}</h1><p>${escape(entry.publisher)} · v${escape(entry.release.version)}</p></div><div class="detail-actions"><a class="install-button${entry.status === 'paused' ? ' paused' : ''}" href="${entry.status === 'paused' ? '#' : deepLink}">${entry.status === 'paused' ? 'Unavailable' : 'Install Plugin'}</a>${entry.repository ? `<a class="source-button" href="${escape(entry.repository)}" rel="noreferrer">View Source</a>` : ''}</div></header>
@@ -94,7 +96,8 @@ for (const entry of listed) {
       <aside class="panel"><dl class="facts"><div><dt>Publisher</dt><dd>${escape(entry.publisher)}</dd></div><div><dt>Version</dt><dd>${escape(entry.release.version)}</dd></div><div><dt>Last updated</dt><dd>${escape(formatDate(entry.release.publishedAt))}</dd></div><div><dt>License</dt><dd>${escape(entry.license)}</dd></div><div><dt>Platforms</dt><dd>${escape(entry.release.platforms.map(platformName).join(' · '))}</dd></div><div><dt>DeepRunner</dt><dd>${escape(entry.release.deepRunnerVersionRange)}</dd></div><div><dt>Capabilities</dt><dd><span class="tags">${entry.release.capabilities.map(item => `<span class="tag capability">${escape(capabilityName(item))}</span>`).join('') || 'No additional capabilities'}</span></dd></div></dl></aside>
     </div>
   </article>`
-  await writeFile(resolve(dir, 'index.html'), layout(`${entry.displayName} · DeepRunner Plugin Marketplace`, entry.summary, body, 2), 'utf8')
+  const depth = 1 + entry.id.split('/').length
+  await writeFile(resolve(dir, 'index.html'), layout(`${entry.displayName} · DeepRunner Plugin Marketplace`, entry.summary, body, depth), 'utf8')
 }
 
 await writeFile(resolve(dist, 'catalog/v1/catalog.sha256'), `${sha256(await readFile(outputPath))}  catalog.json\n`, 'utf8')

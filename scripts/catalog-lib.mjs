@@ -1,11 +1,13 @@
 import { readFile, readdir } from 'node:fs/promises'
-import { resolve } from 'node:path'
+import { relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 export const root = resolve(fileURLToPath(new URL('..', import.meta.url)))
 export const outputPath = resolve(root, 'public/catalog/v1/catalog.json')
+export const pluginsPath = resolve(root, 'plugins')
 
-const idPattern = /^[a-z0-9]+(?:[._-][a-z0-9]+)*$/u
+const idComponent = '[a-z0-9][a-z0-9._-]*'
+const idPattern = new RegExp(`^(?:@${idComponent}/)?${idComponent}$`, 'u')
 const packagePattern = /^(?:@[a-z0-9][a-z0-9._-]*\/)?[a-z0-9][a-z0-9._-]*$/u
 const semverPattern = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/u
 const integrityPattern = /^sha(?:256|384|512)-[A-Za-z0-9+/]+={0,2}$/u
@@ -63,7 +65,7 @@ function validateRelease(release, packageName, label) {
 function validateEntry(entry, label) {
   const required = ['id', 'packageName', 'displayName', 'summary', 'description', 'publisher', 'trustLevel', 'license', 'tags', 'status', 'release']
   exactKeys(entry, label, required, ['repository', 'homepage'])
-  string(entry.id, `${label}.id`, 128)
+  string(entry.id, `${label}.id`, 214)
   string(entry.packageName, `${label}.packageName`, 214)
   assert(idPattern.test(entry.id), `${label}.id is invalid`)
   assert(packagePattern.test(entry.packageName), `${label}.packageName is invalid`)
@@ -109,9 +111,30 @@ export function validateCatalog(catalog) {
 
 export async function loadSourceCatalog() {
   const config = JSON.parse(await readFile(resolve(root, 'catalog.config.json'), 'utf8'))
-  const filenames = (await readdir(resolve(root, 'plugins'))).filter(name => name.endsWith('.json')).sort()
-  const entries = await Promise.all(filenames.map(async name => JSON.parse(await readFile(resolve(root, 'plugins', name), 'utf8'))))
+  const paths = await sourceEntryPaths()
+  const entries = await Promise.all(paths.map(async path => {
+    const entry = JSON.parse(await readFile(path, 'utf8'))
+    const sourceId = relative(pluginsPath, path).split(sep).join('/').replace(/\.json$/u, '')
+    assert(entry.id === sourceId, `source entry ${sourceId} must use the same id as its plugins path`)
+    assert(entry.packageName === entry.id, `source entry ${sourceId} must use its exact npm packageName as id`)
+    return entry
+  }))
   return validateCatalog({ ...config, entries })
+}
+
+export async function sourceEntryPaths(directory = pluginsPath) {
+  const entries = await readdir(directory, { withFileTypes: true })
+  const nested = await Promise.all(entries.map(async entry => {
+    const path = resolve(directory, entry.name)
+    if (entry.isDirectory()) return sourceEntryPaths(path)
+    return entry.isFile() && entry.name.endsWith('.json') ? [path] : []
+  }))
+  return nested.flat().sort()
+}
+
+export function sourceEntryPath(packageName) {
+  assert(idPattern.test(packageName), `unsupported npm package identity ${JSON.stringify(packageName)}`)
+  return resolve(pluginsPath, ...packageName.split('/')) + '.json'
 }
 
 export function serializeCatalog(catalog) {

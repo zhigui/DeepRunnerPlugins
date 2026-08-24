@@ -7,4 +7,5 @@ if (spec === undefined || output === undefined) throw new Error('PACKAGE_SPEC an
 const { packageName, version } = parsePackageSpec(spec)
 if (version === undefined) throw new Error('promotion workflow requires an exact package version')
 const slug = packageName.replace(/^@/u, '').replaceAll('/', '-').replace(/[^a-z0-9._-]/gu, '-')
-await appendFile(output, `branch=promote-${slug}-${version}\n`, 'utf8')
+const kind = process.env.BRANCH_KIND === 'add' ? 'add' : 'promote'
+await appendFile(output, `branch=${kind}-${slug}-${version}\n`, 'utf8')

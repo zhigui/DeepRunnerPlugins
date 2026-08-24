@@ -9,6 +9,7 @@
     "test": "node --test scripts/*.test.mjs",
     "check": "node scripts/validate-catalog.mjs && node scripts/build-site.mjs && node scripts/check-site.mjs && npm test",
     "check:updates": "node scripts/check-updates.mjs",
+    "add": "node scripts/add-plugin.mjs",
     "promote": "node scripts/promote.mjs"
   },
   "engines": {

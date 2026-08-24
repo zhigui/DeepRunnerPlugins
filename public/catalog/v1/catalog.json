@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "2026.08.23.2",
-  "generatedAt": "2026-08-23T00:00:00.000Z",
+  "catalogVersion": "2026.08.24.1",
+  "generatedAt": "2026-08-24T08:22:05.698Z",
   "sourceId": "deeprunner-official",
-  "sourceRevision": "catalog-2026.08.23.2",
+  "sourceRevision": "catalog-2026.08.24.1",
   "revocations": [],
   "entries": [
     {
-      "id": "dsh-im",
+      "id": "@xmanrui/dsh-im",
       "packageName": "@xmanrui/dsh-im",
       "displayName": "DSH IM",
       "summary": "Connect nine IM bots and a public AI Office to your local Harness.",
