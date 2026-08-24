@@ -1,27 +1,45 @@
-const list = document.querySelector('[data-market-list]')
-if (list) {
-  const cards = [...list.querySelectorAll('[data-plugin-card]')]
+const market = document.querySelector('[data-market-list]')
+
+if (market) {
+  const cards = [...market.querySelectorAll('[data-plugin-card]')]
   const search = document.querySelector('[data-search]')
-  const trust = document.querySelector('[data-trust]')
+  const clear = document.querySelector('[data-search-clear]')
+  const shortcut = document.querySelector('[data-search-shortcut]')
+  const empty = document.querySelector('[data-empty]')
+  const count = document.querySelector('[data-result-count]')
+
   const filter = () => {
     const needle = search.value.trim().toLocaleLowerCase()
-    const level = trust.value
-    let visible = 0
-    for (const card of cards) {
-      const match = (level === 'all' || card.dataset.level === level) && card.dataset.search.includes(needle)
-      card.hidden = !match
-      if (match) visible += 1
-    }
-    document.querySelector('[data-empty]').hidden = visible !== 0
-  }
-  search.addEventListener('input', filter)
-  trust.addEventListener('change', filter)
-}
+    const visibleCards = cards.filter(card => {
+      const matches = card.dataset.search.includes(needle)
+      card.hidden = !matches
+      return matches
+    })
 
-const copy = document.querySelector('[data-copy-link]')
-if (copy) copy.addEventListener('click', async () => {
-  await navigator.clipboard.writeText(copy.dataset.copyLink)
-  const original = copy.textContent
-  copy.textContent = '已复制'
-  setTimeout(() => { copy.textContent = original }, 1400)
-})
+    count.textContent = `${visibleCards.length} ${visibleCards.length === 1 ? 'plugin' : 'plugins'}`
+    empty.hidden = visibleCards.length !== 0
+    market.hidden = visibleCards.length === 0
+    clear.hidden = needle.length === 0
+    shortcut.hidden = needle.length !== 0
+  }
+
+  search.addEventListener('input', filter)
+  clear.addEventListener('click', () => {
+    search.value = ''
+    search.focus()
+    filter()
+  })
+  document.addEventListener('keydown', event => {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLocaleLowerCase() === 'k') {
+      event.preventDefault()
+      search.focus()
+      search.select()
+    }
+    if (event.key === 'Escape' && document.activeElement === search) {
+      search.value = ''
+      search.blur()
+      filter()
+    }
+  })
+  filter()
+}

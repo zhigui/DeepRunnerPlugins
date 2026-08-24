@@ -30,7 +30,7 @@ entry.release = {
   distIntegrity: release.integrity,
   sourceRevision: release.sourceRevision,
   publishedAt: new Date(release.publishedAt).toISOString(),
-  releaseNotes: `Curated update to ${packageName} ${release.version}; review upstream release notes before merging.`,
+  releaseNotes: `Marketplace update to ${packageName} ${release.version}; review upstream release notes before merging.`,
 }
 await writeFile(targetPath, `${JSON.stringify(entry, null, 2)}\n`, 'utf8')
 process.stdout.write(`updated ${targetPath}\n`)

@@ -53,7 +53,7 @@
           "network-access",
           "credential-storage"
         ],
-        "releaseNotes": "Initial curated release pinning @xmanrui/dsh-im 1.0.2 for DeepRunner's DSH 0.1.0-rc.6 baseline."
+        "releaseNotes": "Initial marketplace release pinning @xmanrui/dsh-im 1.0.2 for DeepRunner's DSH 0.1.0-rc.6 baseline."
       }
     }
   ]

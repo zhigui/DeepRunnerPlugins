@@ -9,7 +9,7 @@ test('exact package spec parser rejects dist tags and ranges', () => {
   assert.throws(() => parsePackageSpec('plugin@^1.0.0'), /exact semver/u)
 })
 
-test('baseline range checker handles curated bounded forms', () => {
+test('baseline range checker handles supported bounded forms', () => {
   assert.equal(rangeAllowsVersion('^0.1.0-rc.6', '0.1.0'), true)
   assert.equal(rangeAllowsVersion('^0.1.0-rc.6', '0.1.0-rc.7'), true)
   assert.equal(rangeAllowsVersion('^0.1.0-rc.6', '0.1.0-rc.5'), false)
