@@ -1,6 +1,7 @@
 import { access, readFile, stat } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { loadSourceCatalog, root } from './catalog-lib.mjs'
+import { validatePluginDeepLink } from './site-lib.mjs'
 
 const catalog = await loadSourceCatalog()
 const dist = resolve(root, 'site/dist')
@@ -22,7 +23,7 @@ for (const entry of catalog.entries.filter(entry => entry.status !== 'deprecated
   if ((await stat(path)).size === 0) throw new Error(`empty plugin page for ${entry.id}`)
   const html = await readFile(path, 'utf8')
   assertEnglishUi(html, `plugin page ${entry.id}`)
-  if (!html.includes(`deeprunner://market/plugin/${entry.id}`)) throw new Error(`plugin page ${entry.id} has no safe deep link`)
+  validatePluginDeepLink(html, entry)
   if (html.includes('data-copy-link') || html.includes('class="notice"') || html.includes('class="actions"')) throw new Error(`plugin page ${entry.id} contains removed detail actions`)
   if (entry.repository && (!html.includes('class="detail-actions"') || !html.includes('class="source-button"'))) throw new Error(`plugin page ${entry.id} must place source next to install`)
 }
