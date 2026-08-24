@@ -7,45 +7,6 @@ on:
         description: Exact npm package spec, for example @scope/plugin@1.2.3
         required: true
         type: string
-      display_name:
-        description: Human-readable marketplace name
-        required: true
-        type: string
-      summary:
-        description: Short marketplace summary
-        required: true
-        type: string
-      description:
-        description: Full description (uses npm description when empty)
-        required: false
-        type: string
-      publisher:
-        description: Reviewed publisher display name
-        required: true
-        type: string
-      dsh_version_range:
-        description: Reviewed bounded DSH compatibility range
-        required: true
-        type: string
-      deep_runner_version_range:
-        description: Reviewed DeepRunner compatibility range
-        required: true
-        default: ^0.1.0
-        type: string
-      platforms:
-        description: Comma-separated darwin, win32 and/or linux
-        required: true
-        default: darwin,win32,linux
-        type: string
-      faces:
-        description: Comma-separated host and/or client
-        required: true
-        default: host
-        type: string
-      capabilities:
-        description: Comma-separated reviewed capability identifiers
-        required: false
-        type: string
 
 permissions:
   contents: write
@@ -68,15 +29,6 @@ jobs:
       - name: Create reviewed source draft
         env:
           ADD_PACKAGE: ${{ inputs.package }}
-          ADD_DISPLAY_NAME: ${{ inputs.display_name }}
-          ADD_SUMMARY: ${{ inputs.summary }}
-          ADD_DESCRIPTION: ${{ inputs.description }}
-          ADD_PUBLISHER: ${{ inputs.publisher }}
-          ADD_DSH_VERSION_RANGE: ${{ inputs.dsh_version_range }}
-          ADD_DEEP_RUNNER_VERSION_RANGE: ${{ inputs.deep_runner_version_range }}
-          ADD_PLATFORMS: ${{ inputs.platforms }}
-          ADD_FACES: ${{ inputs.faces }}
-          ADD_CAPABILITIES: ${{ inputs.capabilities }}
         run: npm run add
       - name: Bump deterministic catalog version
         run: node scripts/bump-catalog.mjs

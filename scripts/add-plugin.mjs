@@ -10,7 +10,7 @@ const required = name => {
 }
 
 const list = (name, allowed) => {
-  const value = required(name).split(',').map(item => item.trim()).filter(Boolean)
+  const value = optionalList(name)
   if (new Set(value).size !== value.length) throw new Error(`${name} must not contain duplicates`)
   if (allowed !== undefined && value.some(item => !allowed.includes(item))) {
     throw new Error(`${name} contains an unsupported value`)
@@ -40,17 +40,22 @@ for (const path of await sourceEntryPaths()) {
 
 const metadata = await registryMetadata(packageName)
 const release = releaseMetadata(metadata, version)
-if (typeof release.sourceRevision !== 'string' || release.sourceRevision.length === 0) {
-  throw new Error('npm release has no gitHead/source revision; the listing must pin a reviewed source revision')
-}
 if (typeof release.publishedAt !== 'string' || Number.isNaN(Date.parse(release.publishedAt))) {
   throw new Error('npm release has no valid publication timestamp')
 }
 const manifest = release.manifest
 const description = process.env.ADD_DESCRIPTION?.trim() || manifest.description?.trim()
-if (!description) throw new Error('ADD_DESCRIPTION is required when npm metadata has no description')
+  || `Review the upstream package metadata for ${packageName} before listing this plugin.`
+const displayName = process.env.ADD_DISPLAY_NAME?.trim() || packageName.split('/').at(-1)
+const summary = process.env.ADD_SUMMARY?.trim() || manifest.description?.trim()
+  || `Draft marketplace listing for ${packageName}.`
+const author = typeof manifest.author === 'string' ? manifest.author : manifest.author?.name
+const publisher = process.env.ADD_PUBLISHER?.trim()
+  || (packageName.startsWith('@') ? packageName.slice(1).split('/')[0] : undefined)
+  || author
+  || 'Unverified publisher'
 const license = process.env.ADD_LICENSE?.trim() || (typeof manifest.license === 'string' ? manifest.license.trim() : '')
-if (!license) throw new Error('npm metadata has no string license; set ADD_LICENSE after reviewing the package license')
+  || 'UNVERIFIED'
 const capabilities = optionalList('ADD_CAPABILITIES')
 const buildScriptPackages = optionalList('ADD_BUILD_SCRIPT_PACKAGES')
 const repository = httpsUrl(process.env.ADD_REPOSITORY?.trim() || manifest.repository)
@@ -58,28 +63,36 @@ const homepage = httpsUrl(process.env.ADD_HOMEPAGE?.trim() || manifest.homepage)
 const keywords = optionalList('ADD_TAGS')
 const manifestKeywords = Array.isArray(manifest.keywords) ? manifest.keywords : typeof manifest.keywords === 'string' ? manifest.keywords.split(',') : []
 const tags = [...new Set((keywords.length > 0 ? keywords : manifestKeywords).map(item => String(item).trim()).filter(Boolean))].slice(0, 64)
+const dshPeerRanges = [...new Set(Object.entries(manifest.peerDependencies ?? {})
+  .filter(([name, range]) => name.startsWith('@deepseek-ai/dsh') && typeof range === 'string')
+  .map(([, range]) => range))]
+const dshVersionRange = process.env.ADD_DSH_VERSION_RANGE?.trim()
+  || (dshPeerRanges.length === 1 ? dshPeerRanges[0] : '0.0.0')
+const sourceRevision = typeof release.sourceRevision === 'string' && release.sourceRevision.length > 0
+  ? release.sourceRevision
+  : `unverified-npm-artifact:${release.integrity}`
 
 const entry = {
   id: packageName,
   packageName,
-  displayName: required('ADD_DISPLAY_NAME'),
-  summary: required('ADD_SUMMARY'),
+  displayName,
+  summary,
   description,
-  publisher: required('ADD_PUBLISHER'),
+  publisher,
   trustLevel: 'community',
   ...(repository === undefined ? {} : { repository }),
   ...(homepage === undefined ? {} : { homepage }),
   license,
   tags,
-  status: 'listed',
+  status: 'paused',
   release: {
     version: release.version,
     exactSpec: `${packageName}@${release.version}`,
     distIntegrity: release.integrity,
-    sourceRevision: release.sourceRevision,
+    sourceRevision,
     publishedAt: new Date(release.publishedAt).toISOString(),
-    dshVersionRange: required('ADD_DSH_VERSION_RANGE'),
-    deepRunnerVersionRange: required('ADD_DEEP_RUNNER_VERSION_RANGE'),
+    dshVersionRange,
+    deepRunnerVersionRange: process.env.ADD_DEEP_RUNNER_VERSION_RANGE?.trim() || '0.0.0',
     platforms: list('ADD_PLATFORMS', ['darwin', 'win32', 'linux']),
     faces: list('ADD_FACES', ['host', 'client']),
     capabilities,
@@ -98,11 +111,22 @@ const checklist = [
   '',
   `Generated a draft listing for \`${packageName}@${version}\`.`,
   '',
+  'The generated entry is intentionally paused and may be incompatible until the fields below are reviewed.',
+  '',
+  `- Source file: \`${target.slice(root.length + 1)}\``,
+  `- DSH range: \`${entry.release.dshVersionRange}\``,
+  `- DeepRunner range: \`${entry.release.deepRunnerVersionRange}\``,
+  `- Platforms: ${entry.release.platforms.join(', ') || 'none selected'}`,
+  `- Faces: ${entry.release.faces.join(', ') || 'none selected'}`,
+  `- Capabilities: ${entry.release.capabilities.join(', ') || 'none declared'}`,
+  '',
   '- [ ] Publisher and trust level are correct',
   '- [ ] Description, tags and license are accurate',
+  '- [ ] sourceRevision is an audited upstream revision (replace an unverified-npm-artifact value)',
   '- [ ] DSH and DeepRunner compatibility ranges were tested',
   '- [ ] Platforms, faces and capabilities are complete',
   '- [ ] Lifecycle/native dependencies and buildScriptPackages were reviewed',
+  '- [ ] status was changed from paused to listed only after every review item passed',
   '',
   auditMarkdown(audit),
 ].join('\n')
