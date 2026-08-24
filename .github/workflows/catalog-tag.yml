@@ -30,5 +30,5 @@ jobs:
             test "$(git rev-list -n 1 "$tag")" = "$GITHUB_SHA"
             exit
           fi
-          git tag -a "$tag" "$GITHUB_SHA" -m "DeepRunner plugin catalog $version"
+          git tag "$tag" "$GITHUB_SHA"
           git push origin "$tag"
