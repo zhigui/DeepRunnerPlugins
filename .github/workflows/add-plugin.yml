@@ -7,6 +7,45 @@ on:
         description: Exact npm package spec, for example @scope/plugin@1.2.3
         required: true
         type: string
+      display_name:
+        description: Marketplace name, for example DSH iOS Simulator
+        required: true
+        type: string
+      summary:
+        description: One-sentence marketplace summary
+        required: true
+        type: string
+      publisher:
+        description: Reviewed publisher name, usually the npm scope without @
+        required: true
+        type: string
+      dsh_version_range:
+        description: Tested bounded DSH range, for example ^0.1.0-rc.6
+        required: true
+        type: string
+      deep_runner_version_range:
+        description: Tested DeepRunner range
+        required: true
+        default: ^0.1.0
+        type: string
+      platforms:
+        description: Comma-separated availability; darwin, win32, linux
+        required: true
+        default: darwin,win32,linux
+        type: string
+      faces:
+        description: Comma-separated runtime faces; host, client
+        required: true
+        default: host
+        type: string
+      capabilities:
+        description: Comma-separated warnings; filesystem, shell, network-access, device-control
+        required: false
+        type: string
+      build_script_packages:
+        description: Comma-separated packages allowed to run install/build scripts; empty means none
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -29,6 +68,15 @@ jobs:
       - name: Create reviewed source draft
         env:
           ADD_PACKAGE: ${{ inputs.package }}
+          ADD_DISPLAY_NAME: ${{ inputs.display_name }}
+          ADD_SUMMARY: ${{ inputs.summary }}
+          ADD_PUBLISHER: ${{ inputs.publisher }}
+          ADD_DSH_VERSION_RANGE: ${{ inputs.dsh_version_range }}
+          ADD_DEEP_RUNNER_VERSION_RANGE: ${{ inputs.deep_runner_version_range }}
+          ADD_PLATFORMS: ${{ inputs.platforms }}
+          ADD_FACES: ${{ inputs.faces }}
+          ADD_CAPABILITIES: ${{ inputs.capabilities }}
+          ADD_BUILD_SCRIPT_PACKAGES: ${{ inputs.build_script_packages }}
         run: npm run add
       - name: Bump deterministic catalog version
         run: node scripts/bump-catalog.mjs
